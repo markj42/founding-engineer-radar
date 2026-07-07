@@ -17,6 +17,13 @@ export function makeDb(env = process.env) {
       if (error) throw new Error(error.message);
       return data ?? [];
     },
+    matchesForEngineer: async (listingHiId) => {
+      const { data, error } = await supabase.from('matches')
+        .select('company_hi_id, listing_hi_id, score, reasons')
+        .eq('listing_hi_id', listingHiId).order('score', { ascending: false }).limit(5);
+      if (error) throw new Error(error.message);
+      return data ?? [];
+    },
     lastOkRun: async () => {
       const { data, error } = await supabase.from('scan_runs')
         .select('finished_at, status').eq('status', 'ok')

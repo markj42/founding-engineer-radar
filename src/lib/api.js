@@ -12,7 +12,13 @@ function demoData() {
     demo: true,
     status: { last_scan_at: null },
     raises: raises.map((r) => ({ ...card(r), matches: rankMatches(r, engineers).filter((m) => m.score > 0) })),
-    engineers: engineers.map(card),
+    engineers: engineers.map((e) => ({
+      ...card(e),
+      matches: raises
+        .map((r) => rankMatches(r, [e])[0])
+        .filter((m) => m && m.score > 0)
+        .sort((x, y) => y.score - x.score),
+    })),
   };
 }
 

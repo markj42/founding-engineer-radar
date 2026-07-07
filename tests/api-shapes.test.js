@@ -11,6 +11,7 @@ function stubDb({ listings = [], matches = [], runs = [] } = {}) {
   return {
     listingsByKind: async (kind) => listings.filter((l) => l.kind === kind),
     matchesFor: async () => matches,
+    matchesForEngineer: async (id) => matches.filter((m) => m.listing_hi_id === id),
     lastOkRun: async () => runs[0] ?? null,
   };
 }
@@ -27,10 +28,14 @@ describe('api core', () => {
     expect(out.raises[0].matches[0].score).toBe(80);
   });
 
-  it('getEngineers returns engineer cards', async () => {
-    const db = stubDb({ listings: [row({ hi_id: 'li_eng_001', kind: 'engineer' })] });
+  it('getEngineers returns engineer cards with matching startups attached', async () => {
+    const db = stubDb({
+      listings: [row({ hi_id: 'li_eng_001', kind: 'engineer' })],
+      matches: [{ company_hi_id: 'li_raise_001', listing_hi_id: 'li_eng_001', score: 80, reasons: ['x'] }],
+    });
     const out = await getEngineers(db);
     expect(out.engineers).toHaveLength(1);
+    expect(out.engineers[0].matches[0].company_hi_id).toBe('li_raise_001');
   });
 
   it('getStatus reports last successful scan or null', async () => {

@@ -23,8 +23,12 @@ export async function getRaises(db) {
 
 export async function getEngineers(db) {
   const rows = await db.listingsByKind('engineer');
-  const engineers = rows.map(card)
-    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+  const engineers = [];
+  for (const row of rows) {
+    const matches = await db.matchesForEngineer(row.hi_id);
+    engineers.push({ ...card(row), matches });
+  }
+  engineers.sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
   return { engineers };
 }
 
