@@ -54,9 +54,21 @@ Deno.serve(async () => {
     },
   };
 
-  const token = await getAccessToken({ db });
-  const hi = new HiClient({ baseUrl: Deno.env.get('HI_BASE_URL') ?? 'https://hi.hirey.ai', token });
-  const result = await runScan({ hi, db });
+  let result;
+  try {
+    const token = await getAccessToken({ db });
+    const hi = new HiClient({ baseUrl: Deno.env.get('HI_BASE_URL') ?? 'https://hi.hirey.ai', token });
+    result = await runScan({ hi, db });
+  } catch (error) {
+    result = {
+      started_at: new Date().toISOString(),
+      finished_at: new Date().toISOString(),
+      status: 'error',
+      error: 'auth: ' + String((error as Error)?.message ?? error),
+      counts: {},
+    };
+    await db.recordRun(result).catch(() => {});
+  }
   return new Response(JSON.stringify(result), {
     headers: { 'content-type': 'application/json' },
     status: result.status === 'ok' ? 200 : 500,
