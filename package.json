@@ -8,7 +8,7 @@
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "sync-edge": "cp src/lib/scanner-core.js src/lib/differ.js src/lib/matcher.js src/lib/hi-client.js supabase/functions/scanner/"
+    "sync-edge": "cp src/lib/scanner-core.js src/lib/differ.js src/lib/matcher.js src/lib/hi-client.js src/lib/hi-auth.js supabase/functions/scanner/"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

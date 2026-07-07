@@ -4,6 +4,7 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { runScan } from './scanner-core.js';
 import { HiClient } from './hi-client.js';
+import { getAccessToken } from './hi-auth.js';
 
 Deno.serve(async () => {
   const supabase = createClient(
@@ -42,9 +43,19 @@ Deno.serve(async () => {
       const { error } = await supabase.from('radar_scan_runs').insert(run);
       if (error) throw new Error(error.message);
     },
+    getConfig: async () => {
+      const { data, error } = await supabase.from('radar_config').select('value').eq('key', 'hi_auth');
+      if (error) throw new Error(error.message);
+      return data?.[0]?.value ?? null;
+    },
+    saveConfig: async (value: any) => {
+      const { error } = await supabase.from('radar_config').upsert({ key: 'hi_auth', value, updated_at: new Date().toISOString() });
+      if (error) throw new Error(error.message);
+    },
   };
 
-  const hi = new HiClient({ baseUrl: Deno.env.get('HI_BASE_URL') ?? 'https://hi.hirey.ai' });
+  const token = await getAccessToken({ db });
+  const hi = new HiClient({ baseUrl: Deno.env.get('HI_BASE_URL') ?? 'https://hi.hirey.ai', token });
   const result = await runScan({ hi, db });
   return new Response(JSON.stringify(result), {
     headers: { 'content-type': 'application/json' },
