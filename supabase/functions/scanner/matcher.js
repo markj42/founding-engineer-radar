@@ -39,6 +39,20 @@ export function scoreMatch(raiseListing, engineerListing) {
   const reasons = [];
   let score = 0;
 
+  // Fallback: live browse items carry only preview text, no structured blocks.
+  const structured = (raiseListing.target?.requirements?.length || raiseListing.self?.facts?.length)
+    && (engineerListing.self?.facts?.length || engineerListing.target?.requirements?.length);
+  if (!structured) {
+    const a = String(raiseListing.text ?? raiseListing.summary ?? '').toLowerCase();
+    const b = String(engineerListing.text ?? engineerListing.summary ?? '').toLowerCase();
+    const { hits, ratio } = overlap(a, b);
+    score += Math.round(ratio * 60);
+    if (hits.length) reasons.push(`Shared signals: ${hits.slice(0, 5).join(', ')}`);
+    const sf = a.includes('san francisco') && b.includes('san francisco');
+    if (sf) { score += 20; reasons.push('Both mention San Francisco'); }
+    return { score: Math.max(0, Math.min(100, score)), reasons };
+  }
+
   // Founder requirements vs engineer facts (max 40)
   const founderSide = overlap(
     textOf(raiseListing.target?.requirements),
