@@ -36,7 +36,14 @@ export class HiClient {
         body: JSON.stringify(args),
       });
       if (res.ok) return res.json();
-      const envelope = await res.json().catch(() => null);
+      let envelope;
+      try {
+        envelope = await res.json();
+        if (envelope && !envelope.message) envelope.message = JSON.stringify(envelope).slice(0, 300);
+      } catch {
+        const bodyText = typeof res.text === 'function' ? await res.text().catch(() => '') : '';
+        envelope = { message: `HTTP ${res.status}: ${String(bodyText).slice(0, 300)}` };
+      }
       const error = new HiError(envelope, res.status);
       if (!error.retryable || attempt >= this.maxRetries) throw error;
       await sleep(this.backoffMs * 2 ** attempt);
