@@ -1,0 +1,71 @@
+{
+  "listings": [
+    {
+      "listing_id": "li_raise_001",
+      "listing_type_id": "fundraising",
+      "status": "open",
+      "created_at": "2026-07-05T18:00:00Z",
+      "summary": "Raised $4M seed for AI payments infra, hiring founding engineers",
+      "text": "We just closed a $4M seed round. Building agent-native payment rails. Looking for founding backend engineers.",
+      "self": {
+        "role_type_id": "founder",
+        "facts": [
+          {"attribute_label": "stage: seed, just closed $4M", "value_kind": "text", "raw_value_text": "seed, $4M closed 2026-07"},
+          {"attribute_label": "domain: AI payments infrastructure", "value_kind": "text", "raw_value_text": "AI payments infrastructure"},
+          {"attribute_label": "location", "value_kind": "location", "raw_value_text": "San Francisco", "normalized_value": {"city": "San Francisco", "state": "CA", "country": "US"}}
+        ]
+      },
+      "target": {
+        "roles": [{"role_type_id": "candidate"}],
+        "requirements": [
+          {"attribute_label": "backend / infra engineering", "value_kind": "text", "raw_value_text": "backend, distributed systems, payments", "constraint_strength": "must_match"},
+          {"attribute_label": "based in SF or open to relocate", "value_kind": "location", "raw_value_text": "San Francisco", "constraint_strength": "strong_preference"}
+        ]
+      }
+    },
+    {
+      "listing_id": "li_eng_001",
+      "listing_type_id": "job_seeking",
+      "status": "open",
+      "created_at": "2026-07-06T02:00:00Z",
+      "summary": "Staff infra engineer, ex-Stripe, seeking founding eng role at seed stage",
+      "text": "8 years distributed systems and payments infra. Want founding engineer role at a seed-stage AI company in SF.",
+      "self": {
+        "role_type_id": "candidate",
+        "facts": [
+          {"attribute_label": "skills: backend, distributed systems, payments", "value_kind": "text", "raw_value_text": "backend, distributed systems, payments, Go, Rust"},
+          {"attribute_label": "experience: 8 years, ex-Stripe", "value_kind": "text", "raw_value_text": "8 years, ex-Stripe infra"},
+          {"attribute_label": "location", "value_kind": "location", "raw_value_text": "San Francisco", "normalized_value": {"city": "San Francisco", "state": "CA", "country": "US"}}
+        ]
+      },
+      "target": {
+        "roles": [{"role_type_id": "founder"}, {"role_type_id": "recruiter"}],
+        "requirements": [
+          {"attribute_label": "stage: pre-seed or seed", "value_kind": "text", "raw_value_text": "pre-seed, seed", "constraint_strength": "must_match"},
+          {"attribute_label": "AI-native product", "value_kind": "text", "raw_value_text": "AI", "constraint_strength": "strong_preference"}
+        ]
+      }
+    },
+    {
+      "listing_id": "li_eng_002",
+      "listing_type_id": "job_seeking",
+      "status": "open",
+      "created_at": "2026-07-04T09:00:00Z",
+      "summary": "Frontend engineer in NYC, seeking senior role at growth-stage startup",
+      "text": "6 years React/TypeScript. Looking for senior frontend role, growth stage, NYC or remote.",
+      "self": {
+        "role_type_id": "candidate",
+        "facts": [
+          {"attribute_label": "skills: frontend, React, TypeScript", "value_kind": "text", "raw_value_text": "frontend, React, TypeScript"},
+          {"attribute_label": "location", "value_kind": "location", "raw_value_text": "New York", "normalized_value": {"city": "New York", "state": "NY", "country": "US"}}
+        ]
+      },
+      "target": {
+        "roles": [{"role_type_id": "recruiter"}],
+        "requirements": [
+          {"attribute_label": "stage: growth", "value_kind": "text", "raw_value_text": "series B+", "constraint_strength": "must_match"}
+        ]
+      }
+    }
+  ]
+}
