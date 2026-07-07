@@ -15,12 +15,16 @@ export async function getAccessToken({ fetch: fetchImpl = globalThis.fetch, db, 
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         client_name: 'founding-engineer-radar',
+        redirect_uris: ['https://hub.hirey.ai/'],
         grant_types: ['client_credentials'],
         token_endpoint_auth_method: 'client_secret_post',
         scope,
       }),
     });
-    if (!res.ok) throw new Error(`Hi client registration failed (HTTP ${res.status})`);
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      throw new Error(`Hi client registration failed (HTTP ${res.status}): ${body.slice(0, 300)}`);
+    }
     const reg = await res.json();
     credentials = { client_id: reg.client_id, client_secret: reg.client_secret };
     await db.saveConfig({ ...cfg, credentials });
@@ -40,7 +44,10 @@ export async function getAccessToken({ fetch: fetchImpl = globalThis.fetch, db, 
       scope,
     }).toString(),
   });
-  if (!res.ok) throw new Error(`Hi token exchange failed (HTTP ${res.status})`);
+  if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      throw new Error(`Hi token exchange failed (HTTP ${res.status}): ${body.slice(0, 300)}`);
+    }
   const tok = await res.json();
   const token = {
     access_token: tok.access_token,
