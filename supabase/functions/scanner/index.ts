@@ -13,12 +13,12 @@ Deno.serve(async () => {
 
   const db = {
     loadListings: async () => {
-      const { data, error } = await supabase.from('listings').select('raw');
+      const { data, error } = await supabase.from('radar_listings').select('raw');
       if (error) throw new Error(error.message);
       return (data ?? []).map((r) => r.raw);
     },
     saveListings: async (rows: any[]) => {
-      const { error } = await supabase.from('listings').upsert(
+      const { error } = await supabase.from('radar_listings').upsert(
         rows.map((l) => ({
           hi_id: l.listing_id,
           kind: l.listing_type_id === 'fundraising' ? 'raise' : 'engineer',
@@ -35,11 +35,11 @@ Deno.serve(async () => {
       if (error) throw new Error(error.message);
     },
     upsertMatches: async (matches: any[]) => {
-      const { error } = await supabase.from('matches').upsert(matches);
+      const { error } = await supabase.from('radar_matches').upsert(matches);
       if (error) throw new Error(error.message);
     },
     recordRun: async (run: any) => {
-      const { error } = await supabase.from('scan_runs').insert(run);
+      const { error } = await supabase.from('radar_scan_runs').insert(run);
       if (error) throw new Error(error.message);
     },
   };
