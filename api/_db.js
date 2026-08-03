@@ -1,4 +1,4 @@
-// Supabase-backed db adapter for the Netlify functions (server-side only).
+// Supabase-backed db adapter for the API routes (server-side only).
 import { createClient } from '@supabase/supabase-js';
 
 export function makeDb(env = process.env) {

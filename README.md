@@ -12,7 +12,7 @@ engineers match. A live, two-sided radar for the Hirey Hub.
 
 ## Architecture
 
-Netlify (React frontend + serverless API) · Supabase (Postgres + scheduled
+Vercel (React frontend + edge API) · Supabase (Postgres + scheduled
 scanner edge function) · [Hi REST API](https://hirey.ai/api) (open reads via
 `POST /v1/capabilities/{id}/call`).
 
@@ -26,16 +26,16 @@ no API → bundled demo data; no scans yet → status banner.
 1. **Supabase**: create a project, run `supabase/migrations/001_schema.sql`,
    then `npm run sync-edge` and deploy `supabase/functions/scanner`
    (schedule: every 15 min). Set env `HI_BASE_URL=https://hi.hirey.ai`.
-2. **Netlify**: connect this repo. Build is configured in `netlify.toml`.
+2. **Vercel**: import this repo (framework auto-detected via `vercel.json`).
    Set env vars `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (see
-   `.env.example`).
+   `.env.example`). API routes live in `/api` (edge runtime).
 3. Open the site. Before the first scan completes you'll see demo mode.
 
 ## Develop
 
 ```
 npm install
-npm test        # 23 unit/integration tests (vitest)
+npm test        # 31 unit/integration tests (vitest)
 npm run dev     # local UI (demo mode without functions)
 npm run build
 ```

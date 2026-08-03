@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getRaises, getEngineers, getStatus } from '../netlify/functions/_core.js';
+import { getRaises, getEngineers, getStatus } from '../api/_core.js';
 
 const row = (over = {}) => ({
   hi_id: 'li_raise_001', kind: 'raise', summary: 'Raised $4M seed',
