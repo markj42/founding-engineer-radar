@@ -35,10 +35,19 @@ create table if not exists public.radar_scan_runs (
   counts jsonb not null default '{}'
 );
 
+-- Scanner-side key/value store. Holds the Hi agent credentials + token cache
+-- written by the auth bootstrap in supabase/functions/scanner.
+create table if not exists public.radar_config (
+  key text primary key,
+  value jsonb not null,
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists radar_events_created_idx on public.radar_events (created_at desc);
 create index if not exists listings_kind_idx on public.radar_listings (kind, seen_at desc);
 
 -- Lock down: RLS on, no policies -> only service-role access
+alter table public.radar_config enable row level security;
 alter table public.radar_listings enable row level security;
 alter table public.radar_events enable row level security;
 alter table public.radar_matches enable row level security;
