@@ -35,7 +35,7 @@ no API → bundled demo data; no scans yet → status banner.
 
 ```
 npm install
-npm test        # 42 unit/integration tests (vitest)
+npm test        # 48 unit/integration tests (vitest)
 npm run dev     # local UI (demo mode without functions)
 npm run build
 ```
